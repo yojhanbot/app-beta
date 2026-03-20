@@ -37,6 +37,7 @@ user= $SUPABASE_USERNAME
 password= $SUPABASE_PASSWORD
   
 ";
+
 $supabase_conn = pg_connect($supabase_data_connection);
 if(!$supabase_conn) {
     echo "<br>ERROR: Unable to connect to the supabase database!";
