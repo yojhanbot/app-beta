@@ -14,12 +14,20 @@ if (empty($email) || empty($p_ssword) || empty($m_phone)) {
     echo json_encode(['message' => 'Faltan datos obligatorios']);
     exit;
 }
-
+/*
 // ==================== FEATURE 1: EMAIL ÚNICO ====================
 // Validación en PostgreSQL local
 $result = pg_query_params($conn, "SELECT id FROM users WHERE email = $1 LIMIT 1", [$email]);
 if (pg_num_rows($result) > 0) {
     echo json_encode(['message' => 'El correo electrónico ya está registrado en el sistema.']);
+    exit;
+}*/
+
+// ==================== FEATURE 2: NÚMERO DE CELULAR ÚNICO ====================
+// Validación en PostgreSQL local
+$result = pg_query_params($conn, "SELECT id FROM users WHERE mobilephone = $1 LIMIT 1", [$m_phone]);
+if (pg_num_rows($result) > 0) {
+    echo json_encode(['message' => 'El número de celular ya está registrado en el sistema.']);
     exit;
 }
 
@@ -40,10 +48,16 @@ if (!empty(json_decode($response, true))) {
     exit;
 }
 
+/*
+$sql = "INSERT INTO users (firstname, lastname, email, mobilephone, password) 
+        VALUES ($1, $2, $3, $4, $5)";
+pg_query_params($conn, $sql, [$f_name, $l_name, $email, $m_phone, $p_ssword]);
+
+echo json_encode(['message' => 'Usuario registrado correctamente (Feature 1 - Email único validado)']);*/
 
 $sql = "INSERT INTO users (firstname, lastname, email, mobilephone, password) 
         VALUES ($1, $2, $3, $4, $5)";
 pg_query_params($conn, $sql, [$f_name, $l_name, $email, $m_phone, $p_ssword]);
 
-echo json_encode(['message' => 'Usuario registrado correctamente (Feature 1 - Email único validado)']);
+echo json_encode(['message' => 'Usuario registrado correctamente (Feature 2 - Número de celular único validado)']);
 ?>
